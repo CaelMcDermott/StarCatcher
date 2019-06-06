@@ -66,7 +66,7 @@ var badStar = {
         obj._xSpeed=xSpeed;
         obj._ySpeed=ySpeed;
         obj._img = new Image();
-        obj._img.src="images/bstar.png";
+        obj._img.src="images/bstar.jpg";
         return obj;
     },
 
@@ -86,25 +86,31 @@ window.onload = function() {
     //load canvas
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d"),
-        w = canvas.width = 800,
-        h = canvas.height = 500;
-
+        w = canvas.width = 900,
+        h = canvas.height = 600;
+ ctx.fillStyle= "rgba(250,0,0,.4)";
+        ctx.fillRect(50,50,w-100,h-100);
+        ctx.fillStyle="black";
+        ctx.font="30px Sans-Serif";
+         ctx.fillText("Game over, Player Two Wins",w/4,h/2);
+          ctx.fillText("Whoever has the most oil (and doesn't die) wins!",w/9,h/1.7);
     //load images
     var background = new Image();
     background.src="images/background.png"; 
       var ship1 = new Image();
-    ship1.src="images/china.png";
+    ship1.src="images/america.png";
     var ship2 = new Image();
-    ship2.src="images/america.png";
+    ship2.src="images/china.png";
 
     //load variables
-    var p1x=w/2+100, p1y=h/2, p2x=w/2-100, p2y=h/2, size =40;
+    var p1x=w/2-100, p1y=h/2, p2x=w/2+100, p2y=h/2, size =40;
     var gameOn=false;
-    var p1Score=0, p2Score=0;
+    var p1Score=0, p2Score=0; p1Lives=3, p2Lives=3;
+    var totStars =0;
 
 
     //load star array
-    var starCount=25;
+    var starCount=20;
     var starArray=[];
 
     // Create an array of stars
@@ -116,7 +122,7 @@ window.onload = function() {
     }   // close load star array
 
         // our BADstars are created using a single array with a class of information
-    var badStarCount=3;
+    var badStarCount=6;
     var badStarArray=[];
 
     // Create an array of stars
@@ -140,8 +146,8 @@ window.onload = function() {
                 if (starArray[i]._y>h || starArray[i]._y<0) {starArray[i]._ySpeed = -starArray[i]._ySpeed}
 
 
-                if (Math.abs(p1x-starArray[i]._x)<20 & Math.abs(p1y-starArray[i]._y)<20) {starArray[i]._visible=false;}
-                if (Math.abs(p2x-starArray[i]._x)<20 & Math.abs(p2y-starArray[i]._y)<20) {starArray[i]._visible=false;}
+                if (Math.abs(p1x-starArray[i]._x)<20 & Math.abs(p1y-starArray[i]._y)<20) {scoring(i,1);}
+                if (Math.abs(p2x-starArray[i]._x)<20 & Math.abs(p2y-starArray[i]._y)<20) {scoring(i,2);}
             } //if visible
         }//endFor
 
@@ -156,8 +162,8 @@ window.onload = function() {
                 if (badStarArray[i]._y>h || badStarArray[i]._y<0) {badStarArray[i]._ySpeed = -badStarArray[i]._ySpeed}
 
 
-                if (Math.abs(p1x-badStarArray[i]._x)<20 & Math.abs(p1y-badStarArray[i]._y)<20) {badStarArray[i]._visible=false;}
-                if (Math.abs(p2x-badStarArray[i]._x)<20 & Math.abs(p2y-badStarArray[i]._y)<20) {badStarArray[i]._visible=false;}
+                if (Math.abs(p1x-badStarArray[i]._x)<20 & Math.abs(p1y-badStarArray[i]._y)<20) {lives(i,1);}
+                if (Math.abs(p2x-badStarArray[i]._x)<20 & Math.abs(p2y-badStarArray[i]._y)<20) {lives(i,2);}
             } //if visible
         }//endFor
     } //end StarsUpdate
@@ -190,34 +196,44 @@ window.onload = function() {
     function playerUpdate() {
         //player two hodling down a key using the array keysDown
         if (87 in keysDown) {// P2 holding down the w key
-            p2y -= 5;
+            p1y -= 5;
         }
         if (83 in keysDown) { // P2 holding down (key: s)
-            p2y += 5;
+            p1y += 5;
         }
         if (65 in keysDown) { // P2 holding down (key: a)
-            p2x -= 5;
+            p1x -= 5;
         }
         if (68 in keysDown) { // P2 holding down (key: d)
-            p2x += 5;
+            p1x += 5;
         }
 
         // player one hodling key down
         if (37 in keysDown) { // P2 holding down (key: left arrow)
-            p1x -= 5;
+            p2x -= 5;
         }
         if (38 in keysDown) { // P2 holding down (key: up arrow)
-            p1y -= 5;
+            p2y -= 5;
         }
         if (39 in keysDown) { // P2 holding down (key: right arrow)
-            p1x += 5;
+            p2x += 5;
         }
         if (40 in keysDown) { // P2 holding down (key: down arrow)
-            p1y += 5;
+            p2y += 5;
         }
              //draw images of ships
         ctx.drawImage(ship1, p1x, p1y, 40, 40);
         ctx.drawImage(ship2, p2x, p2y, 40, 40);
+        if (p1x>w-20){p1x=w-30}
+        if (p1x<20){p1x=30}
+        if (p1y<20){p1y=30}
+        if (p1y>h-20){p1y=h-30}
+
+              if (p2x>w-20){p2x=w-30}
+        if (p2x<20){p2x=30}
+        if (p2y<20){p2y=30}
+        if (p2y>h-20){p2y=h-30}
+    
     }
            
     //Our main function which clears the screens 
@@ -230,8 +246,11 @@ window.onload = function() {
         playerUpdate();
        if (gameOn==1) {requestAnimationFrame(main)};
     } //close main 
+
     //  scoring functions to place and score stars
     function scoring(k,wp) {
+        totStars++;
+        if (totStars==starCount){gameOn=false; endGame(1); console.log(totStars)}
         starArray[k]._visible=false;
         if (wp==1) {
             // need to place 8a small star next to player 1 score
@@ -244,4 +263,46 @@ window.onload = function() {
         }
     } //close scoring
 
+ function lives(k,wp) {
+        if (wp == 1) {
+            p1Lives=p1Lives-1;
+            p1Score=p1Score-3;
+            $("#p1ScoreDisp").text(p1Score);
+            if (p1Lives<=0) {
+                p1Score-=10; 
+                gameOn=false;
+                endGame(1);
+            }
+            $("#p1LivesDisp").text(p1Lives);
+            p1x=w/2, p1y=h/2;
+            badStarArray[k]._visible=false;
+            badStarArray[k]._x=w+900;
+        } //close if wp
+         if (wp == 2) {
+            p2Lives=p2Lives-1;
+            p2Score=p2Score-3;
+            $("#p2ScoreDisp").text(p2Score);
+            if (p2Lives<=0) {
+                p2Score-=10; 
+                gameOn=false;
+                endGame(2);
+            }
+            $("#p2LivesDisp").text(p2Lives);
+            p2x=w/2, p2y=h/2;
+            badStarArray[k]._visible=false;
+            badStarArray[k]._x=w+900;
+        } //close if wp
+    }   // close lives
+    function endGame(wp) {
+        ctx.fillStyle= "rgba(250,0,0,.4)";
+        ctx.fillRect(50,50,w-100,h-100);
+        ctx.fillStyle="black";
+        ctx.font="50px Sans-Serif";
+        if (p1Score>p2Score){
+            ctx.fillText("Game over, America Wins!",w/4,h/2);
+        }
+        if (p2Score>p1Score){
+            ctx.fillText("Game over, China Wins!",w/4,h/2);
+        }       
+    }  // close endGame
 }  // close onload window               

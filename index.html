@@ -5,6 +5,7 @@
     <title>StarCatcher - Software Development</title>
 <!--    our link to the javascript file that will control the game actions -->
     <script type="text/javascript" src="scScriptsTwo.js"></script>
+           <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <!--    out styles will be internal until we need to move them to an external file -->
     <style type="text/css">
         html, body {margin: 5px;}
@@ -12,33 +13,44 @@
         #game {
             margin-left: auto;
             margin-right: auto;
-            width: 800px;
-            height: 500px;
+            width: 900px;
+            height: 600px;
             background-color: lightblue;
             border-radius: 10px;
         }
-        .centerText {text-align: center;}
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        .centerText {text-align: center;
+color: white;
+        }
+
+ 
 
         #leftSide {
             float:left;
-            width: 100px;
+            width: 150px;
             margin-left:40px;
+            font-size: 30px;
+            color: white
         }
         #rightSide {
             float: right;
-            width: 100px;
+            width: 150px;
             margin-right:40px;
+              font-size: 30px;
+            color: white;
+
         }
-
-    <p id="leftSide">Player 2: <span id="p1ScoreDisp">0</span></p>
-    <p id="rightSide">Player 1: <span id="p2ScoreDisp">0</span></p>
-
+        body {
+  background-image: url("images/realoil1.jpg");
+}
         
     </style>
 </head>
 <body>
-    <h2 class="centerText">Get That Oil!</h2>
+    <h2 class="centerText">Get That Crude Oil!</h2>
+    <p id="leftSide">America: <span id="p1ScoreDisp">0</span><br>
+        Lives: <span id="p1LivesDisp">3</span></p>
+    <p id="rightSide">China: <span id="p2ScoreDisp">0</span><br>
+        Lives: <span id="p2LivesDisp">3</span></p>
     <div id="game">
         <canvas id="myCanvas"></canvas>
     </div>
