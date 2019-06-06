@@ -92,7 +92,7 @@ window.onload = function() {
         ctx.fillRect(50,50,w-100,h-100);
         ctx.fillStyle="black";
         ctx.font="30px Sans-Serif";
-         ctx.fillText("Game over, Player Two Wins",w/4,h/2);
+         ctx.fillText("Welcome to the Oil Crisis Game!",w/4,h/2);
           ctx.fillText("Whoever has the most oil (and doesn't die) wins!",w/9,h/1.7);
     //load images
     var background = new Image();
